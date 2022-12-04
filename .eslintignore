@@ -1,0 +1,5 @@
+backend/build/
+backend/src/database/migrations
+backend/src/database/seeders
+backend/src/database/config
+backend/src/database/models/index.ts

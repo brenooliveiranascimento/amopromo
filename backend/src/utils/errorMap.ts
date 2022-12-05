@@ -1,0 +1,3 @@
+export const ErrorMap = {
+  SQL_CONNECTION_ERROR: 'SQL_CONNECTION_ERROR'
+}

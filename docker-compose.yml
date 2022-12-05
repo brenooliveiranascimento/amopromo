@@ -6,6 +6,8 @@ services:
       - 3000:3000
     platform: linux/x86_64
     working_dir: /amopromo-frontend
+    volumes:
+      - ./frontend:/app/amopromo-frontend
     depends_on:
       backend:
         condition: service_healthy
@@ -20,6 +22,8 @@ services:
       - 3001:3001
     platform: linux/x86_64
     working_dir: /amopromo-backend
+    volumes:
+      - ./backend:/amopromo-backend
     depends_on:
       db:
         condition: service_healthy
@@ -28,14 +32,24 @@ services:
       - JWT_SECRET=jwt_secret
       - DB_USER=root
       - DB_PASS=123456
-      - DB_HOST=db
+      - DB_HOST=amopromo_db
       - DB_PORT=3306
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"] 
+      timeout: 10s
+      retries: 5
   db:
     image: mysql:8.0.21
     container_name: amopromo_db
     platform: linux/x86_64
     ports:
-      - 3306:3306
+      - 3002:3306
     environment:
       - MYSQL_ROOT_PASSWORD=123456
     restart: 'always'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+    cap_add:
+      - SYS_NICE

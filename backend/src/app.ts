@@ -1,6 +1,9 @@
+import axios from 'axios';
 import 'express-async-errors';
 import * as express from 'express';
 import errorMiddleware from './middlewares/errorMiddleware';
+import { lastRequest } from './middlewares/lastAirportRequest';
+import airportRoutes from './routes/aurportroutes';
 
 class App {
   public app: express.Express;
@@ -10,7 +13,9 @@ class App {
 
     this.config();
 
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.use(lastRequest)
+
+    this.app.get('/', async (req, res) => res.status(200).json({ message: "AmoPromo" }));
     this.routes();
   }
 
@@ -24,6 +29,7 @@ class App {
   }
 
   private routes(): void {
+    this.app.use('/airports', airportRoutes)
     this.app.use(errorMiddleware);
   }
 

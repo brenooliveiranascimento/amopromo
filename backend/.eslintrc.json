@@ -16,7 +16,7 @@
   "parserOptions": {
     "ecmaVersion": 2019,
     "sourceType": "module",
-    "project": "src"
+    "project": "./tsconfig.json"
   },
   "plugins": [
     "@typescript-eslint",
@@ -26,6 +26,7 @@
   "rules": {
     "no-underscore-dangle": "off",
     "no-console": "off",
+    "camelcase": "warn",
     "arrow-parens": [
       2,
       "always"

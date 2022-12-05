@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
-import { IGetAllAirports } from '../interfaces/AirportControllerResponse';
 import AirportModel from '../database/models/AirportModel';
-import { IAirports } from '../interfaces/airports';
 
 interface IAirportService {
   handleAirportStatus: (id: number, currStatus: boolean) => Promise<void>;

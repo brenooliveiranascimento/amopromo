@@ -17,4 +17,9 @@ export default class AirportsService {
     const airports = await this.airportModel.findAll();
     return airports;
   }
+
+  async getByIata(iata: string): Promise<AirportModel> {
+    const airport = await this.airportModel.findOne({ where: { iata } });
+    return airport as AirportModel;
+  }
 };

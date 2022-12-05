@@ -1,3 +1,4 @@
+import axios from 'axios';
 import 'express-async-errors';
 import * as express from 'express';
 import errorMiddleware from './middlewares/errorMiddleware';
@@ -10,7 +11,19 @@ class App {
 
     this.config();
 
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.get('/', async (req, res) => {
+      const apiApi = axios.create({
+        baseURL: 'http://stub.2xt.com.br/air/airports/pzrvlDwoCwlzrWJmOzviqvOWtm4dkvuc',
+      });
+
+      const { data }: any = await apiApi.get('/', {
+        headers: {
+          Authorization: 'Basic ZGVtbzpzd252bEQ=',
+        },
+      });
+      console.log(data);
+      res.status(200).json(data);
+    });
     this.routes();
   }
 

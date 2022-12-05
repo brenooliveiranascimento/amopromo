@@ -21,7 +21,6 @@ class App {
           Authorization: 'Basic ZGVtbzpzd252bEQ=',
         },
       });
-      console.log(data);
       res.status(200).json(data);
     });
     this.routes();

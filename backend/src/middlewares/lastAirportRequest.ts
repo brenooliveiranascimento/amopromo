@@ -9,30 +9,49 @@ const DAY_IN_MILISECONDS = 8640000000
 
 const updateAirportsData = async () => {
   const { data }: any = await airportApiConnection.get('/', baseHeader);
-
-  await AirportModel.afterBulkDestroy(() => {
-    Promise.all(Object.keys(data)
-      .map( async (currAirport: string) => {
+    Promise.all(Object.keys(data).map( async (currAirport: string) => {
       const { city, iata, lat, lon, state }: IAirports = data[currAirport];
-      const insertAirport = await AirportModel.create({
-        iata, city, state, active: true
-      });
+      const airport = await AirportModel.findOne({where: { iata }});
+      if(!airport) return createAirportData();
+      await AirportModel.update(
+        { iata, city, state, active: true, statusMessage: null},
+        { where: { id: airport?.id } }
+        );
 
-      await AirportCoordinate.create({
-        lat, lon, airportId: insertAirport.id
-      });
+      await AirportCoordinate.update(
+        {lat, lon },
+        { where: { airportId: airport?.id } }
+        );
     }))
-  })
+}
+
+const createAirportData = async () => {
+  const { data }: any = await airportApiConnection.get('/', baseHeader);
+    Promise.all(Object.keys(data).map( async (currAirport: string) => {
+      const { city, iata, lat, lon, state }: IAirports = data[currAirport];
+
+      const airport = await AirportModel.create(
+        { iata, city, state, active: true, statusMessage: 'Active!'}
+        );
+
+      await AirportCoordinate.create(
+        {lat, lon, airportId: airport.id });
+    }))
 }
 
 export const lastRequest = async (_req: Request, _res: Response, next: NextFunction) => {
-  const [{ lastUpdate, id }] = await LastAirportRequest.findAll();
+  const [lastUpdateDate] = await LastAirportRequest.findAll();
 
-  if(Date.now() - Number(lastUpdate) >= DAY_IN_MILISECONDS ) {
-
+  if(!lastUpdateDate) {
+    await LastAirportRequest.create(
+      { lastUpdate: JSON.stringify(Date.now()), id: 1 });
+    await createAirportData();
+    return next();
+  }
+  if(Date.now() - Number(lastUpdateDate.lastUpdate) >= DAY_IN_MILISECONDS ) {
     await LastAirportRequest.update(
       { lastUpdate: JSON.stringify(Date.now()) },
-      { where: { id } });
+      { where: { id: lastUpdateDate.id } });
 
     updateAirportsData();
    return next()

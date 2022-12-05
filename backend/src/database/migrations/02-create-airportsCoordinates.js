@@ -23,6 +23,8 @@ module.exports = {
           key: 'id',
         },
         field: 'airport_id',
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       }
     });
   },

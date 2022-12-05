@@ -29,6 +29,10 @@ AirportModel.init({
     type: STRING(100),
     allowNull: false,
   },
+  statusMessage: {
+    type: STRING(300),
+    allowNull: true,
+  },
   active: {
     allowNull: false,
     type: BOOLEAN

@@ -22,6 +22,10 @@ module.exports = {
       active: {
         allowNull: false,
         type: Sequelize.BOOLEAN
+      },
+      statusMessage: {
+        allowNull: true,
+        type: Sequelize.STRING(300),
       }
     });
   },

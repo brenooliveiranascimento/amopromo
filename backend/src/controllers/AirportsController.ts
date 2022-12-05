@@ -19,7 +19,7 @@ export default class AirportController {
     return res.status(201).json({ message: 'airport status updated with success!!' })
   }
 
-  async getAll(req: Request, res: Response) {
+  async getAll(_req: Request, res: Response) {
     const airports = await this._airportService.getAll();
     return res.status(201).json({ message: airports });
   }

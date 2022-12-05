@@ -3,5 +3,6 @@ export interface IAirports {
   city: string;
   lat: number;
   lon: number;
-  state: string
+  state: string;
+  active?: boolean
 }

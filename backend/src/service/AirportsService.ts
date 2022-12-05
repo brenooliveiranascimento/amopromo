@@ -13,7 +13,8 @@ export default class AirportsService {
     } catch(e: any) { throw new CustomError(e.message, 500) }
   };
 
-  async createCache() {
-    
-  };
+  async getAll(): Promise<AirportModel[]> {
+    const airports = await this.airportModel.findAll();
+    return airports;
+  }
 };

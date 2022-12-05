@@ -2,6 +2,7 @@ import axios from 'axios';
 import 'express-async-errors';
 import * as express from 'express';
 import errorMiddleware from './middlewares/errorMiddleware';
+import { lastRequest } from './middlewares/lastAirportRequest';
 
 class App {
   public app: express.Express;
@@ -11,18 +12,9 @@ class App {
 
     this.config();
 
-    this.app.get('/', async (req, res) => {
-      const apiApi = axios.create({
-        baseURL: 'http://stub.2xt.com.br/air/airports/pzrvlDwoCwlzrWJmOzviqvOWtm4dkvuc',
-      });
+    this.app.use(lastRequest)
 
-      const { data }: any = await apiApi.get('/', {
-        headers: {
-          Authorization: 'Basic ZGVtbzpzd252bEQ=',
-        },
-      });
-      res.status(200).json(data);
-    });
+    this.app.get('/', async (req, res) => res.status(200).json({ message: "AmoPromo" }));
     this.routes();
   }
 

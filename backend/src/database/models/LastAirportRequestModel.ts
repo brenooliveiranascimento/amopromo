@@ -4,7 +4,7 @@ import db from '.';
 
 class LastAirportRequest extends Model {
   declare id: number;
-  declare last_update: string;
+  declare lastUpdate: string;
 }
 LastAirportRequest.init({
   id: {
@@ -13,7 +13,7 @@ LastAirportRequest.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  last_update: {
+  lastUpdate: {
     type: STRING(30),
     allowNull: false,
   },

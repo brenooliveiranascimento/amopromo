@@ -1,4 +1,4 @@
 export interface ILastAirportRequest {
   id?: number;
-  lastUpdate: string;
+  last_Update: string;
 }

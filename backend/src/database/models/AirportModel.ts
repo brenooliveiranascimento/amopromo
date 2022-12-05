@@ -1,3 +1,4 @@
+import { BOOLEAN } from 'sequelize';
 import { Model, INTEGER, STRING, DECIMAL } from 'sequelize';
 import db from '.';
 
@@ -27,6 +28,10 @@ AirportModel.init({
     type: STRING(100),
     allowNull: false,
   },
+  active: {
+    allowNull: false,
+    type: BOOLEAN
+  }
 }, {
   sequelize: db,
   modelName: 'airports',

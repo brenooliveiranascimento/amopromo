@@ -1,3 +1,4 @@
+import CustomError from "../utils/StatusError";
 import AirportModel from "../database/models/AirportModel";
 
 export default class AirportsService {
@@ -5,10 +6,11 @@ export default class AirportsService {
     private airportModel = AirportModel) {}
 
   async handleAirportStatus(id: number, currStatus: boolean):Promise<void> {
-    await this.airportModel.update(
-      { active: currStatus},
-      { where: { id } }
-    )
+    try {
+      await this.airportModel.update(
+        { active: currStatus},
+        { where: { id } })
+    } catch(e: any) { throw new CustomError(e.message, 500) }
   };
 
   async createCache() {

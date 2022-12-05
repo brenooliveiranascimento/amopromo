@@ -7,6 +7,7 @@ class AirportModel extends Model {
   declare iate: string;
   declare city: string;
   declare state: string;
+  declare active: boolean
 }
 
 AirportModel.init({

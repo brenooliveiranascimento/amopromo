@@ -6,7 +6,7 @@ import { IMountTravelParams } from "../interfaces/TravelInterfaces";
 import CustomError from "../utils/StatusError";
 import { ErrorMap } from "../utils/errorMap";
 import { IOptions, ITravel } from "../interfaces/Travel";
-import { calculateDiference, haversine, mountPrice } from "../utils/travelOptionsUtils";
+import { calculateDiference, haversineForm, mountPrice } from "../utils/travelOptionsUtils";
 
 export default class TravelService {
   constructor(private airportsService = new AirportsService()) {}
@@ -17,18 +17,20 @@ export default class TravelService {
     const newOption = options.map((currOption: IOptions) => {
       const price = mountPrice(currOption);
       const travelTime = calculateDiference(currOption.departure_time, currOption.arrival_time)
-      const meta = haversine({ lat1: from.lat, lon1: from.lon, lat2: to.lat, lon2: to.lon }, travelTime, price.total);
+      const meta = haversineForm({ lat1: from.lat, lon1: from.lon, lat2: to.lat, lon2: to.lon }, travelTime, price.total);
       return { ...currOption, price, meta }
     });
     return { ...currTravel, options: newOption };
   }
 
-  private async getTravel(travelParams: IMountTravelParams) {
+  private async getTravel(travelParams: IMountTravelParams, type: string) {
     const { exitDate, returnDate } = travelParams;
 
-    const exitAndReturnDate = Promise.all([exitDate, returnDate]
+    const matches = type === 'unit' ? [exitDate] : [exitDate, returnDate];
+
+    const exitAndReturnDate = Promise.all(matches
       .map(async (currDate: Date | string, index: number) => {
-      const data = await requestTravel(travelParams, currDate);
+      const data = await requestTravel(travelParams, currDate, index);
       if(!index) return { type: 'Exit', ...data };
       return { type: 'return', ...data };
     }))
@@ -47,21 +49,28 @@ export default class TravelService {
     throw new CustomError(ErrorMap.INVALID_AIRPORT, 404);
   }
 
-  private async travelValidations(travelParams: IMountTravelParams): Promise<void> {
+  private async travelValidations(travelParams: IMountTravelParams, type: string): Promise<void> {
     const { arrival, depure, exitDate, returnDate } = travelParams;
 
     await this.checkAirportsExist([arrival, depure]);
-
-    if(new Date(exitDate) > new Date(returnDate)) throw new CustomError(ErrorMap.RETURN_LESS, 404);
+    if(type !== 'unit') {
+      if(new Date(exitDate) > new Date(returnDate)) throw new CustomError(ErrorMap.RETURN_LESS, 404);
+    }
     if(new Date(exitDate) > new Date()) throw new CustomError(ErrorMap.EXIT_NOW, 404);
     if(arrival === depure) throw new CustomError(ErrorMap.EQUAL_DESTINATIONS, 404);
   }
 
-  async mountTravel(travelParams: IMountTravelParams): Promise<any> {
-    await this.travelValidations(travelParams);
+  async mountUnitTravel(travelParams: IMountTravelParams): Promise<any> {
+    await this.travelValidations(travelParams, 'unit');
 
-    const travel = await this.getTravel(travelParams);
+    const travel = await this.getTravel(travelParams, 'unit');
+    return travel
+  }
 
+  async mountMultiTravel(travelParams: IMountTravelParams): Promise<any> {
+    await this.travelValidations(travelParams, 'mult');
+
+    const travel = await this.getTravel(travelParams, 'mult');
     return travel
   }
 }

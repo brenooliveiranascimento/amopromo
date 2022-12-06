@@ -12,15 +12,11 @@ export const mountPrice = (currOption: IOptions) => {
   const calculateFees = Number((currOption.price.fare / 100) * 10);
   const fees = Number((calculateFees > 40 ? calculateFees : 40).toFixed(2));
   const total = Number((fees + currOption.price.fare).toFixed(2));
-  const newPrice = {
-    ...currOption.price,
-    fees,
-    total
-  }
+  const newPrice = { ...currOption.price, fees, total }
   return newPrice
 }
 
-export function haversine(coordinates: any, travelTime: number, price: number) {
+export function haversineForm(coordinates: any, travelTime: number, price: number) {
   const { lat1, lon1, lat2, lon2 } =  coordinates;
     let dLat = (lat2 - lat1) * Math.PI / 180.0;
     let dLon = (lon2 - lon1) * Math.PI / 180.0;
@@ -38,5 +34,4 @@ export function haversine(coordinates: any, travelTime: number, price: number) {
       cost_per_km: Number((km / price).toFixed(2)),
     }
     return meta;
-     
 }

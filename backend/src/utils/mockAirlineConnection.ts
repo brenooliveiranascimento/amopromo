@@ -1,4 +1,5 @@
 import axios from "axios"
+import { ITravel } from "../interfaces/Travel";
 import { IMountTravelParams } from "../interfaces/TravelInterfaces";
 import { baseHeader } from "./airportConnection";
 
@@ -10,5 +11,5 @@ export const requestTravel = async (travelParams: IMountTravelParams, currDate: 
   const { arrival, depure } = travelParams;
   const { data } = await mockAirlineApi
     .get(`/${arrival}/${depure}/${currDate}`, baseHeader);
-  return data
+  return data;
 } 

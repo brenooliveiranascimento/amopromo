@@ -1,4 +1,4 @@
-interface IFrom {
+export interface IFrom {
   iata: string
   city: string
   lat: number
@@ -6,7 +6,7 @@ interface IFrom {
   state: string
 };
 
-interface ITo {
+export interface ITo {
   iata: string
   city: string
   lat: number
@@ -14,31 +14,31 @@ interface ITo {
   state: string
 };
 
-interface ISumary {
+export interface ISumary {
   departure_date: string | Date;
   from: IFrom;
   to: ITo;
   currency: string;
 };
 
-interface IIcarft {
+export interface IIcarft {
   model: string;
   manufacturer: string;
 };
 
-interface IPrice {
+export interface IPrice {
   fare: number;
   fees: number;
   total: number;
 };
 
-interface IMeta {
+export interface IMeta {
   rage: number;
   cruise_speed_kmh: number;
   cust_per_km: number;
 };
 
-interface IOptions {
+export interface IOptions {
   departure_time: Date | string;
   arrival_time:  Date | string;
   price: IPrice;
@@ -47,7 +47,7 @@ interface IOptions {
 }
 
 export interface ITravel {
- type: string;
+ type?: string;
  sumary: ISumary;
- option: IOptions[];
+ options: IOptions[];
 }

@@ -5,13 +5,20 @@ import AirportsService from "./AirportsService";
 import { IMountTravelParams } from "../interfaces/TravelInterfaces";
 import CustomError from "../utils/StatusError";
 import { ErrorMap } from "../utils/errorMap";
+import { IOptions, ITravel } from "../interfaces/Travel";
+import { calculateDiference, mountPrice } from "../utils/travelOptionsUtils";
 
 export default class TravelService {
   constructor(private airportsService = new AirportsService()) {}
 
-
-  mountOptions() {
-    
+  mountOptions(currTravel: ITravel) {
+    const { options, sumary, type } = currTravel;
+    console.log(calculateDiference(options[0].departure_time, options[0].arrival_time));
+    const newOption = options.map((currOption: IOptions) => {
+      const price = mountPrice(currOption);
+      return { ...currOption, price }
+    });
+    return { currTravel, options: newOption }
   }
 
   private async getTravel(travelParams: IMountTravelParams) {
@@ -23,7 +30,9 @@ export default class TravelService {
       if(!index) return { type: 'Exit', ...data };
       return { type: 'return', ...data };
     }))
-    const mountOptions = await (await exitAndReturnDate).map((currTravel) => this.mountOptions());
+    const mountOptions = await (await exitAndReturnDate)
+      .map((currTravel: ITravel) => this.mountOptions(currTravel));
+    return exitAndReturnDate;
   }
 
   private async checkAirportsExist(airports: string[]):Promise<boolean> {

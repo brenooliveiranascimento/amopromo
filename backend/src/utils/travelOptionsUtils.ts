@@ -9,9 +9,9 @@ export const calculateDiference = (init: Date | string, end: Date | string) => {
 }
 
 export const mountPrice = (currOption: IOptions) => {
-  const calculateFees = (currOption.price.fare / 100) * 10;
-  const fees = calculateFees > 40 ? calculateFees : 40;
-  const total = fees + currOption.price.fare;
+  const calculateFees = Number((currOption.price.fare / 100) * 10);
+  const fees = Number((calculateFees > 40 ? calculateFees : 40).toFixed(2));
+  const total = Number((fees + currOption.price.fare).toFixed(2));
   const newPrice = {
     ...currOption.price,
     fees,

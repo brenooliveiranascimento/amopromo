@@ -18,7 +18,7 @@ export default class TravelService {
       const price = mountPrice(currOption);
       return { ...currOption, price }
     });
-    return { currTravel, options: newOption }
+    return { ...currTravel, options: newOption }
   }
 
   private async getTravel(travelParams: IMountTravelParams) {
@@ -32,7 +32,7 @@ export default class TravelService {
     }))
     const mountOptions = await (await exitAndReturnDate)
       .map((currTravel: ITravel) => this.mountOptions(currTravel));
-    return exitAndReturnDate;
+    return mountOptions;
   }
 
   private async checkAirportsExist(airports: string[]):Promise<boolean> {

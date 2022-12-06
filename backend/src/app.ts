@@ -3,7 +3,7 @@ import 'express-async-errors';
 import * as express from 'express';
 import errorMiddleware from './middlewares/errorMiddleware';
 import { lastRequest } from './middlewares/lastAirportRequest';
-import airportRoutes from './routes/aurportroutes';
+import airportRoutes from './routes/airportroutes';
 
 class App {
   public app: express.Express;

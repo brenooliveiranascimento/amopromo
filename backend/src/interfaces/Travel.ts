@@ -48,6 +48,6 @@ export interface IOptions {
 
 export interface ITravel {
  type?: string;
- sumary: ISumary;
+ summary: ISumary;
  options: IOptions[];
 }

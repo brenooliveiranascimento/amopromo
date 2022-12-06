@@ -6,19 +6,21 @@ import { IMountTravelParams } from "../interfaces/TravelInterfaces";
 import CustomError from "../utils/StatusError";
 import { ErrorMap } from "../utils/errorMap";
 import { IOptions, ITravel } from "../interfaces/Travel";
-import { calculateDiference, mountPrice } from "../utils/travelOptionsUtils";
+import { calculateDiference, haversine, mountPrice } from "../utils/travelOptionsUtils";
 
 export default class TravelService {
   constructor(private airportsService = new AirportsService()) {}
 
   mountOptions(currTravel: ITravel) {
-    const { options, sumary, type } = currTravel;
-    console.log(calculateDiference(options[0].departure_time, options[0].arrival_time));
+    const { options, summary } = currTravel;
+    const { from, to } = summary;
     const newOption = options.map((currOption: IOptions) => {
       const price = mountPrice(currOption);
-      return { ...currOption, price }
+      const travelTime = calculateDiference(currOption.departure_time, currOption.arrival_time)
+      const meta = haversine({ lat1: from.lat, lon1: from.lon, lat2: to.lat, lon2: to.lon }, travelTime, price.total);
+      return { ...currOption, price, meta }
     });
-    return { ...currTravel, options: newOption }
+    return { ...currTravel, options: newOption };
   }
 
   private async getTravel(travelParams: IMountTravelParams) {

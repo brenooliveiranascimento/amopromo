@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import AirportModel from '../database/models/AirportModel';
 
-interface IAirportService {
+export interface IAirportService {
   handleAirportStatus: (id: number, currStatus: boolean) => Promise<void>;
   getAll: () => Promise<AirportModel[]>;
   getByIata: (iata: string) => Promise<AirportModel>;

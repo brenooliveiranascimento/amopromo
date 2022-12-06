@@ -3,7 +3,8 @@ import 'express-async-errors';
 import * as express from 'express';
 import errorMiddleware from './middlewares/errorMiddleware';
 import { lastRequest } from './middlewares/lastAirportRequest';
-import airportRoutes from './routes/aurportroutes';
+import airportRoutes from './routes/airportroutes';
+import travelRouter from './routes/travelRoutes'
 
 class App {
   public app: express.Express;
@@ -30,6 +31,7 @@ class App {
 
   private routes(): void {
     this.app.use('/airports', airportRoutes)
+    this.app.use('/travel', travelRouter);
     this.app.use(errorMiddleware);
   }
 

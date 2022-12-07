@@ -6,7 +6,7 @@ import { IMountTravelParams } from "../interfaces/TravelInterfaces";
 import CustomError from "../utils/StatusError";
 import { ErrorMap } from "../utils/errorMap";
 import { IOptions, ITravel } from "../interfaces/Travel";
-import { calculateDiference, haversineForm, mountPrice } from "../utils/travelOptionsUtils";
+import { calculateDiference, combinations, haversineForm, mountPrice } from "../utils/travelOptionsUtils";
 
 export default class TravelService {
   constructor(private airportsService = new AirportsService()) {}
@@ -58,30 +58,29 @@ export default class TravelService {
     if(arrival === depure) throw new CustomError(ErrorMap.EQUAL_DESTINATIONS, 404);
   }
 
-  private combinations(travels: any) {
-    const exitTravel = travels[0];
-    const returnTravel = travels[1];
-    const { from, to, currency, options: exitOptions } = exitTravel;
-    const { options: returnOprions } = returnTravel;
-    const { departure_time: exit_date } = exitOptions[0];
-    const { departure_time: return_date } = returnOprions[0];
-    const options = exitTravel.options.map((currTravel: any, index: number) => {
-      const { total_price: currTravel_total, aircraft: currAirCtaft } = currTravel;
-      const some = returnTravel.options.map((currReturnTravel: any) => {
-        const { total_price, aircraft} = currReturnTravel;
-        const total_value = Number((currTravel_total + total_price).toFixed(2));
-        return { total_value, return_with: aircraft, exit_whith: currAirCtaft };
-      });
-      return { [`${currAirCtaft.manufacturer}:${currAirCtaft.model}`]: some };
-    });
-    const format = options.reduce((acc: any, currAirport: any) => {
-      acc = { ...acc, ...currAirport };
-      console.log(acc);
-      return acc
-    }, {});
-    console.log(format)
-    return { from, to, currency, dates: { exit_date, return_date }, options: format }
-  }
+  // private combinations(travels: any) {
+  //   const exitTravel = travels[0];
+  //   const returnTravel = travels[1];
+  //   const { from, to, currency, options: exitOptions } = exitTravel;
+  //   const { options: returnOprions } = returnTravel;
+  //   const { departure_time: exit_date } = exitOptions[0];
+  //   const { departure_time: return_date } = returnOprions[0];
+  //   const options = exitTravel.options.map((currTravel: any, index: number) => {
+  //     const { total_price: currTravel_total, aircraft: currAirCtaft } = currTravel;
+  //     const some = returnTravel.options.map((currReturnTravel: any) => {
+  //       const { total_price, aircraft} = currReturnTravel;
+  //       const total_value = Number((currTravel_total + total_price).toFixed(2));
+  //       return { total_value, return_with: aircraft, exit_whith: currAirCtaft };
+  //     });
+  //     return { [`${currAirCtaft.manufacturer}:${currAirCtaft.model}`]: some };
+  //   });
+  //   const format = options.reduce((acc: any, currAirport: any) => {
+  //     acc = { ...acc, ...currAirport };
+  //     console.log(acc);
+  //     return acc
+  //   }, {});
+  //   return { from, to, currency, dates: { exit_date, return_date }, options: format }
+  // }
 
   private formatData(travel: ITravel) {
     const { options: oldOptions, summary, type } = travel;
@@ -113,7 +112,7 @@ export default class TravelService {
 
     const travel = await this.getTravel(travelParams, 'mult');
     const formatData = travel.map((currTravel: any) => this.formatData(currTravel))
-    const calculaAllTravels = this.combinations(formatData);
+    const calculaAllTravels = combinations(formatData);
     return calculaAllTravels
   }
 }

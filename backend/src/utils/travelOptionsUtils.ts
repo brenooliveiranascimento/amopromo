@@ -36,14 +36,8 @@ export function haversineForm(coordinates: any, travelTime: number, price: numbe
     return meta;
 }
 
-export const combinations = (travels: any) => {
-  const exitTravel = travels[0];
-  const returnTravel = travels[1];
-  const { from, to, currency, options: exitOptions } = exitTravel;
-  const { options: returnOprions } = returnTravel;
-  const { departure_time: exit_date } = exitOptions[0];
-  const { departure_time: return_date } = returnOprions[0];
-  const options = exitTravel.options.map((currTravel: any, index: number) => {
+const sumOptionsValues = (exitTravel: any, returnTravel:any) => {
+  return exitTravel.options.map((currTravel: any, index: number) => {
     const { total_price: currTravel_total, aircraft: currAirCtaft } = currTravel;
     const some = returnTravel.options.map((currReturnTravel: any) => {
       const { total_price, aircraft} = currReturnTravel;
@@ -51,11 +45,30 @@ export const combinations = (travels: any) => {
       return { total_value, exit_whith: currAirCtaft, return_with: aircraft };
     });
     return { [`${currAirCtaft.manufacturer}:${currAirCtaft.model}`]: some };
-  });
-  const format = options.reduce((acc: any, currAirport: any) => {
+  })
+}
+ 
+export const combinations = (travels: any) => {
+  const exitTravel = travels[0];
+  const returnTravel = travels[1];
+  const { from, to, currency, options: exitOptions } = exitTravel;
+  const { options: returnOprions } = returnTravel;
+  const { departure_time: exit_date } = exitOptions[0];
+  const { departure_time: return_date } = returnOprions[0];
+
+  const options = sumOptionsValues(exitTravel, returnTravel);
+
+  const formatOptions = options.reduce((acc: any, currAirport: any) => {
     acc = { ...acc, ...currAirport };
-    console.log(acc);
     return acc
   }, {});
-  return { from, to, currency, dates: { exit_date, return_date }, options: format }
+
+  return {
+    from,
+    to,
+    currency,
+    dates: { exit_date, return_date },
+    options: formatOptions,
+    individual_metrics: [ ...exitOptions, ...returnOprions ]
+  }
 }

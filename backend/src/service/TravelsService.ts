@@ -58,8 +58,27 @@ export default class TravelService {
     if(arrival === depure) throw new CustomError(ErrorMap.EQUAL_DESTINATIONS, 404);
   }
 
-  private formatData(travel: ITravel, type: string) {
-    const { options: oldOptions, summary } = travel;
+  private combinations(travels: any) {
+    const exitTravel = travels[0];
+    const returnTravel = travels[1];
+    const { from, to, currency, options: exitOptions } = exitTravel;
+    const { options: returnOprions } = returnTravel;
+    const { departure_time: exit_date } = exitOptions[0];
+    const { departure_time: return_date } = returnOprions[0];
+    const [options] = exitTravel.options.map((currTravel: any, index: number) => {
+      const { total_price: currTravel_total, aircraft: currAirCtaft } = currTravel;
+      const some = returnTravel.options.map((currReturnTravel: any) => {
+        const { total_price, aircraft} = currReturnTravel;
+        const total_value = Number((currTravel_total + total_price).toFixed(2));
+        return { total_value, return_with: aircraft, exit_whith: currAirCtaft };
+      });
+      return { [`${currAirCtaft.manufacturer}:${currAirCtaft.model}`]: some };
+    });
+    return { from, to, currency, dates: { exit_date, return_date },options }
+  }
+
+  private formatData(travel: ITravel) {
+    const { options: oldOptions, summary, type } = travel;
     const { from: oldFrom, to: oldTo, currency } = summary;
 
     const options = oldOptions.map((currOption: IOptions) => {
@@ -68,7 +87,8 @@ export default class TravelService {
       return {
         aircraft, distance: range, departure_time, arrival_time, total_price: total 
       };
-    })
+    });
+
     const from = { city: oldFrom.city, iata:oldFrom.iata };
     const to = { city: oldTo.city, iata:oldTo.iata };
     return { type, from, to, currency, options };
@@ -78,7 +98,7 @@ export default class TravelService {
     await this.travelValidations(travelParams, 'unit');
 
     const travel = await this.getTravel(travelParams, 'unit') as any;
-    const formatData = this.formatData(travel[0], 'unit')
+    const formatData = this.formatData(travel[0])
     return formatData
   }
 
@@ -86,7 +106,8 @@ export default class TravelService {
     await this.travelValidations(travelParams, 'mult');
 
     const travel = await this.getTravel(travelParams, 'mult');
-    const formatData = travel.map((currTravel: any) => this.formatData(currTravel, 'multi'))
-    return formatData
+    const formatData = travel.map((currTravel: any) => this.formatData(currTravel))
+    const calculaAllTravels = this.combinations(formatData);
+    return calculaAllTravels
   }
 }

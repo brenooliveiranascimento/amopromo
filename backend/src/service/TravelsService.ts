@@ -65,7 +65,7 @@ export default class TravelService {
     const { options: returnOprions } = returnTravel;
     const { departure_time: exit_date } = exitOptions[0];
     const { departure_time: return_date } = returnOprions[0];
-    const [options] = exitTravel.options.map((currTravel: any, index: number) => {
+    const options = exitTravel.options.map((currTravel: any, index: number) => {
       const { total_price: currTravel_total, aircraft: currAirCtaft } = currTravel;
       const some = returnTravel.options.map((currReturnTravel: any) => {
         const { total_price, aircraft} = currReturnTravel;
@@ -74,7 +74,13 @@ export default class TravelService {
       });
       return { [`${currAirCtaft.manufacturer}:${currAirCtaft.model}`]: some };
     });
-    return { from, to, currency, dates: { exit_date, return_date },options }
+    const format = options.reduce((acc: any, currAirport: any) => {
+      acc = { ...acc, ...currAirport };
+      console.log(acc);
+      return acc
+    }, {});
+    console.log(format)
+    return { from, to, currency, dates: { exit_date, return_date }, options: format }
   }
 
   private formatData(travel: ITravel) {

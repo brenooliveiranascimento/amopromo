@@ -64,6 +64,7 @@ export const combinations = (travels: any) => {
   }, {});
 
   return {
+    type: 'round trip',
     from,
     to,
     currency,

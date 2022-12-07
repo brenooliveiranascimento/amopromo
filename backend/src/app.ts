@@ -5,6 +5,8 @@ import errorMiddleware from './middlewares/errorMiddleware';
 import { lastRequest } from './middlewares/lastAirportRequest';
 import airportRoutes from './routes/airportroutes';
 import travelRouter from './routes/travelRoutes'
+import autenticationRouter from './routes/loginRoutes';
+import tokenValidation from './middlewares/loginMiddleware';
 
 class App {
   public app: express.Express;
@@ -30,6 +32,8 @@ class App {
   }
 
   private routes(): void {
+    this.app.use('/login', autenticationRouter);
+    this.app.use(tokenValidation);
     this.app.use('/airports', airportRoutes)
     this.app.use('/travel', travelRouter);
     this.app.use(errorMiddleware);

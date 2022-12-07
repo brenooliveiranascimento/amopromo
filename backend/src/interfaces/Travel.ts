@@ -33,7 +33,7 @@ export interface IPrice {
 };
 
 export interface IMeta {
-  rage: number;
+  range: number;
   cruise_speed_kmh: number;
   cust_per_km: number;
 };

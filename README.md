@@ -21,8 +21,9 @@ essas são "/airports/:id/:currStatus" pegar alterar o status do aeroporto.
 - Navegue até o diretorio criado com o comando "cd desafio-front"
 - Navegue até o diretorio frontend com o comando "cd frontend"
 - Execute o comando "npm i" ou se preferir utilizar o yarn com "yarn"
-- [EXECUÇÃO COM DOCKER] volte para o diretorio onde possui o docker-compose com "cd .." e execute "docker-compose up"
-- [EXECUÇÃO SEM DOCKER] permaneça no diretorio frontend e execute "npm start"
+- [EXECUÇÃO COM DOCKER] Volte para o diretorio onde possui o docker-compose com "cd .." e execute "docker-compose up"
+- [EXECUÇÃO SEM DOCKER] Permaneça no diretorio frontend e execute "npm start"
+- [EXECUÇÃO SEM DOCKER] Navegue até backend e execute "npm run dev"
 - Por padrão o projeto estará rodando na porta 3000 então acesse a url "http://localhost:3000/" dentro do seu navegador
 
 ## [Link para acessar o projeto](https://possessive-distribution-production.up.railway.app/home)

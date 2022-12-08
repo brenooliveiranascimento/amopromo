@@ -9,12 +9,12 @@ ou pelo "npm start" na pasta frontend e "npm run dev" no backendcaso preferirem.
 # [Link para acessar o projeto](https://possessive-distribution-production.up.railway.app/home)
 
 Todas os endpoints da aplicação estão disponiveis na rota thunder-collection_AmoPromo.json.
-
-essas são "/travel/POA/AAX/2022-06-12" para gerar uma viagem apenas de ida.
-essas são "/travel/POA/AAX/2022-06-12/2022-06-15" para gerar uma viagem de ida e volta.
-essas são "/login" para gerar um token de acesso as rotas.
-essas são "/airports" pegar os aeroportos no nosso banco de dados.
-essas são "/airports/:id/:currStatus" pegar alterar o status do aeroporto.
+essas são:
+"/login" para gerar um token de acesso as rotas. (Necessario body contendo email e password);
+"/travel/POA/AAX/2022-06-12" para gerar uma viagem apenas de ida. (Necessario Token);
+"/travel/POA/AAX/2022-06-12/2022-06-15" para gerar uma viagem de ida e volta. (Necessario Token);
+"/airports" pegar os aeroportos no nosso banco de dados. (Necessario Token);
+"/airports/:id/:currStatus" pegar alterar o status do aeroporto. (Necessario Token);
 
 ## Para rodar o projeto em sua máquina
 - Clone o repositório com o comando "git clone git@github.com:brenooliveiranascimento/desafio-front.git"

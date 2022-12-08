@@ -1,0 +1,10 @@
+.home_container {
+  width: 1100px;
+  align-items: center;
+  display: flex;
+  height: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: pink;
+}

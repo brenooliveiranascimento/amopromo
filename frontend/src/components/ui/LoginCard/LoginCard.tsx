@@ -13,7 +13,7 @@ export default function LoginCard() {
         email,
         password
       });
-      localStorage.setItem('AMOPROMO_TOKEN', JSON.stringify(data.token))
+      localStorage.setItem('AMOPROMO_TOKEN', data.token)
       history.push('/home');
     } catch(e: any) { alert(e.response.data.message) }
   }

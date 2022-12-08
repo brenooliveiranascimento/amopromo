@@ -42,14 +42,9 @@ export default class TravelService {
   private async checkAirportsExist(airports: string[]):Promise<boolean> {
     const getAirports = await Promise
       .all(airports.map(async(currAirport: string) => await this.airportsService.getByIata(currAirport)));
-    const validateExist = getAirports.every((currAirport: any) => currAirport);
+    const validate = getAirports.every((currAirport: any) => currAirport && currAirport.active);
 
-    const validateActive = getAirports.every((currAirport: any) => {
-      console.log(currAirport.active)
-      return currAirport.active
-    });
-
-    if(validateExist && validateActive) return true;
+    if(validate) return true;
     throw new CustomError(ErrorMap.INACTIVE_AIRPORT, 404);
   }
 

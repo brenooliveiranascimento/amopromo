@@ -33,7 +33,6 @@ A utilização da POO, creio que pequei um pouco na utilização do total total 
 
 ## [Link para acessar o projeto](https://possessive-distribution-production.up.railway.app/home)
 
-Tecnologias utilizadas:<br/>
 <h2>Tecnologias Utilizadas<h2>
 <img src="https://img.shields.io/badge/node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white"/> 
 <img src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white"/>

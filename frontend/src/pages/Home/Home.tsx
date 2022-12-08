@@ -16,17 +16,26 @@ export default function Home() {
     } catch(e: any) { alert(e.response.data.message) };
   }
 
+  const updateStatus = (index: number) => {
+    const updatedAirportList: IAirport[] = [ ...airports ];
+    updatedAirportList[index].active = !updatedAirportList[index].active;
+    setAirports(updatedAirportList);
+  }
+
   useEffect(() => {
     requestAirports();
   }, []);
 
   return (
-    <main className='main_container'>
+    <main className='container'>
       <section className='home_container'>
-        { airports && airports.map((currAirport: IAirport) => <AirportCard
+        { airports && airports.map((currAirport: IAirport, index) =>
+          <AirportCard
+          index={index}
+          updateStatus={(id: number) => updateStatus(id)}
           key={currAirport.id}
           airport={currAirport}
-          />) }
+          />)}
       </section>
     </main>
   )

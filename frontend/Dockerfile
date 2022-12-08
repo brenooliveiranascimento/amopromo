@@ -1,6 +1,6 @@
 FROM node:16.14-alpine
 
-WORKDIR /amopromo-frontend
+WORKDIR /app/amopromo-frontend
 
 EXPOSE 3001
 

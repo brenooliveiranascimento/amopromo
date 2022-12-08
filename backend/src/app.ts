@@ -1,3 +1,4 @@
+const cors = require('cors');
 import axios from 'axios';
 import 'express-async-errors';
 import * as express from 'express';
@@ -13,6 +14,7 @@ class App {
 
   constructor() {
     this.app = express();
+    this.app.use(cors())
 
     this.config();
 

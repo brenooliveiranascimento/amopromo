@@ -5,7 +5,7 @@ services:
     ports:
       - 3000:3000
     platform: linux/x86_64
-    working_dir: /amopromo-frontend
+    working_dir: /app/amopromo-frontend
     volumes:
       - ./frontend:/app/amopromo-frontend
     depends_on:

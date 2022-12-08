@@ -1,5 +1,5 @@
 import axios from "axios"; 
 
 export const serviceConnection = axios.create({
-  baseURL: 'http://localhost:3001/'
+  baseURL: 'https://backend-production-9ab0.up.railway.app/'
 });

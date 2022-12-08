@@ -16,6 +16,11 @@ essas são:
 - "/airports" pegar os aeroportos no nosso banco de dados. (Necessario Token);
 - "/airports/:id/:currStatus" pegar alterar o status do aeroporto. (Necessario Token);
 
+No geral adorei fazer o projeto, pude exercitar muito logica pois sai um pouco da caixa com esse tipo de problema que nunca tive contato antes.
+
+## Pontos que eu melhoraria o meu código
+A utilização da POO, creio que pequei um pouco na utilização do total total potencial desse paradigma, eu poderia ter utilizado melhor as eranças e o polimofirsmo criando assim classes menores e mais legiveis.
+
 ## Para rodar o projeto em sua máquina
 - Clone o repositório com o comando "git clone git@github.com:brenooliveiranascimento/desafio-front.git"
 - Navegue até o diretorio criado com o comando "cd desafio-front"
